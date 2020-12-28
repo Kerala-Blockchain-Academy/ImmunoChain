@@ -1,0 +1,195 @@
+$pe-7s-font-path: "~pe7-icon/dist/fonts" !default;
+@import 'base/new_variables';
+@import 'base/variables';
+@import 'base/mixins';
+
+@import "~pe7-icon/dist/scss/pe-icon-7-stroke.scss";
+@import 'base/chartist';
+@import "~chartist/dist/scss/chartist.scss";
+@import 'base/sidebar';
+@import 'base/navbar';
+@import 'base/card';
+@import 'base/todos';
+@import 'base/checkbox-radio-switch';
+@import 'base/footer';
+@import 'base/buttons';
+@import 'base/pagination';
+@import 'base/social-buttons';
+@import 'base/icons';
+@import 'base/panels';
+@import 'base/typography';
+@import 'base/form';
+@import 'base/tags';
+@import 'react-dates/styles';
+
+html, body {
+  font-size: 14px;
+}
+.react-date-picker__calendar{
+  z-index: 100 !important;
+
+}
+.col-md-6 .col-md-12 .react-date-picker .react-date-picker__calendar{
+  right: 0px !important;
+  left: unset !important;
+}
+.react-date-picker__calendar--above-label{
+  top:0;
+}
+.places-buttons .btn {
+  margin-bottom: 30px;
+}
+
+.rbc-calendar {
+  .rbc-toolbar .rbc-toolbar-label {
+    font-size: 22px;
+  }
+  .rbc-toolbar {
+    margin-bottom: 25px;
+  }
+  .rbc-toolbar button {
+    @include btn-styles($primary-bg, $primary-states-color);
+    &.rbc-active,
+    &.rbc-active:hover,
+    &:active,
+    &:focus,
+    &:hover,
+    &:active:hover {
+      background-color: lighten($primary-bg, 25%);
+      border-color: $primary-bg;
+    }
+  }
+  .rbc-month-row {
+    min-height: 100px;
+  }
+  .rbc-row-segment {
+    padding: 2px;
+    .rbc-event {
+      background: $primary-bg;
+    }
+    .rbc-event.rbc-selected {
+      background: darken($primary-bg, 5);
+    }
+    .rbc-event-content {
+      font-size: 12px;
+    }
+
+  }
+  .rbc-time-view,
+  .rbc-month-view,
+  .rbc-agenda-view {
+    border-radius: 3px;
+  }
+}
+
+.ct-chart-line .ct-label, .ct-chart-bar .ct-label {
+  font-size: 1rem;
+}
+
+.react-bs-table {
+  .table {
+    margin-bottom: 0;
+  }
+}
+
+.card-counter{
+  box-shadow: 2px 2px 10px #DADADA;
+  margin: 5px;
+  padding: 20px 10px;
+  background-color: #fff;
+  height: 100px;
+  border-radius: 5px;
+  transition: .3s linear all;
+}
+
+.card-counter:hover{
+  box-shadow: 4px 4px 20px rgb(61, 60, 60);
+  transition: .3s linear all;
+}
+
+.card-counter.primary{
+  background-color: #007bff;
+  color: #FFF;
+}
+
+.card-counter.warning{
+  background-color: #dbce1b;
+  color: #FFF;
+}
+
+.card-counter.danger{
+  background-color: #ec4644;
+  color: #FFF;
+}  
+
+.card-counter.success{
+  background-color: #43c54a;
+  color: #FFF;
+}  
+
+.card-counter.info{
+  background-color: #26c6da;
+  color: #FFF;
+}  
+
+.card-counter i{
+  font-size: 5em;
+  opacity: 0.2;
+}
+
+.card-counter .count-numbers{
+  position: absolute;
+  right: 35px;
+  top: 20px;
+  font-size: 32px;
+  display: block;
+}
+
+.card-counter .count-name{
+  position: absolute;
+  // right: 35px;
+  top: 65px;
+  // font-style: italic;
+  text-transform: capitalize;
+  opacity: 0.8;
+  display: block;
+  font-size: 14px;
+}
+.card-icon{
+  display: block;
+}
+
+.shadow-style{
+  // border: 1px solid;
+  padding: 10px;
+  box-shadow: 5px 10px 15px #888888;
+}
+
+.collapsible{
+  width:100% !important;
+  font-weight: bold;
+  padding-left: 5px
+  // border-bottom:groove;
+}
+.collapsible:hover{
+  cursor: pointer;
+  color: blue;
+}
+.collapse_open{
+  color:green;
+  width:100% !important;
+  font-weight: bold;
+  padding-left: 5px
+
+  // border-style: groove;
+}
+.collapse_open:hover{
+  cursor: pointer;
+  color: blue;
+}
+
+.table_transition{
+  transition: opacity .5s ease-in-out;
+  -moz-transition: opacity .5s ease-in-out;
+  -webkit-transition: opacity .5s;
+}

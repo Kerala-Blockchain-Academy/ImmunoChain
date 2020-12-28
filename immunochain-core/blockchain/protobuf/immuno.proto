@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+message vaccine{
+    
+    string uuids = 1;
+}
+
+message payload{
+		string action = 1;
+		string uuid = 2;
+		string package_id = 3;
+		string package_type_id = 4;
+		string previous_uuid = 5;
+		string dose_count = 6;
+		string user_id = 7;
+		string received_date_time = 8;
+		string status = 9;
+		string name = 10;
+		string manufacturing_date = 11;
+		string expiry_date  = 12;
+		string manufacturer_info = 13 ;
+		string from_station = 14;
+		string to_station = 15;
+		string adjustments =16;
+		string comments =17;
+}

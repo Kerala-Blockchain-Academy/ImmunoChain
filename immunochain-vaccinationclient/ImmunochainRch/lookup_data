@@ -1,0 +1,232 @@
+{
+  "languages": [
+    {
+      "id": "en", 
+      "name": "English"
+    }, 
+    {
+      "id": "hi", 
+      "name": "Hindi"
+    }, 
+    {
+      "id": "ml", 
+      "name": "Malayalam"
+    }
+  ], 
+  "roles": [
+    {
+      "id": 2, 
+      "name": "sc_user"
+    }, 
+    {
+      "id": 3, 
+      "name": "phc_user"
+    }
+  ], 
+  "stations": {
+    "stations_list": [
+      {
+        "station_address": "Kazhakuttam", 
+        "station_code": "ST1", 
+        "station_id": "1", 
+        "station_name": "PHC Kazhakuttam"
+      }, 
+      {
+        "station_address": "Alappuzha", 
+        "station_code": "ST2", 
+        "station_id": "2", 
+        "station_name": "PHC Alappuzha"
+      }, 
+      {
+        "station_address": "Ernakulam", 
+        "station_code": "ST3", 
+        "station_id": "3", 
+        "station_name": "PHC Ernakulam"
+      }
+    ]
+  }, 
+  "status_code": 200, 
+  "status_msg": "Success", 
+  "vaccine_names": {
+    "BCG": [
+      "BCG"
+    ], 
+    "DPT BOOSTER": [
+      "DPT BOOSTER1", 
+      "DPT BOOSTER2"
+    ], 
+    "HePB": [
+      "HePB"
+    ], 
+    "IPV": [
+      "IPV1", 
+      "IPV2"
+    ], 
+    "JAPANESE ENCEPHALITIS": [
+      "JAPANESE ENCEPHALITIS1", 
+      "JAPANESE ENCEPHALITIS2"
+    ], 
+    "MMR": [
+      "MMR"
+    ], 
+    "MR1": [
+      "MR1"
+    ], 
+    "PENTA": [
+      "PENTA1", 
+      "PENTA2", 
+      "PENTA3"
+    ], 
+    "POLIO": [
+      "POLIO0", 
+      "POLIO1", 
+      "POLIO2", 
+      "POLIO3"
+    ], 
+    "POLIO BOOSTER": [
+      "POLIO BOOSTER"
+    ], 
+    "TT BOOSTER": [
+      "TT BOOSTER1", 
+      "TT BOOSTER2"
+    ], 
+    "VITAA": [
+      "VITAA1", 
+      "VITAA2", 
+      "VITAA3", 
+      "VITAA4", 
+      "VITAA5", 
+      "VITAA6", 
+      "VITAA7", 
+      "VITAA8", 
+      "VITAA9"
+    ]
+  }, 
+  "vaccine_names_id": {
+    "BCG": 7, 
+    "DPT BOOSTER": 9, 
+    "HePB": 8, 
+    "IPV": 1, 
+    "JAPANESE ENCEPHALITIS": 11, 
+    "MMR": 10, 
+    "MR1": 12, 
+    "PENTA": 4, 
+    "POLIO": 2, 
+    "POLIO BOOSTER": 3, 
+    "TT BOOSTER": 6, 
+    "VITAA": 5
+  }, 
+  "vaccines": {
+    "vaccine": [
+      {
+        "age": "0M", 
+        "vaccines": [
+          "BCG", 
+          "POLIO0", 
+          "HePB"
+        ]
+      }, 
+      {
+        "age": "1_5M", 
+        "vaccines": [
+          "POLIO1", 
+          "IPV1", 
+          "PENTA1"
+        ]
+      }, 
+      {
+        "age": "2_5M", 
+        "vaccines": [
+          "POLIO2", 
+          "PENTA2"
+        ]
+      }, 
+      {
+        "age": "3_5M", 
+        "vaccines": [
+          "POLIO3", 
+          "IPV2", 
+          "PENTA3"
+        ]
+      }, 
+      {
+        "age": "9M", 
+        "vaccines": [
+          "MR1", 
+          "VITAA1", 
+          "JAPANESE ENCEPHALITIS1"
+        ]
+      }, 
+      {
+        "age": "16to24M", 
+        "vaccines": [
+          "POLIO BOOSTER", 
+          "VITAA2", 
+          "JAPANESE ENCEPHALITIS2", 
+          "MMR", 
+          "DPT BOOSTER1"
+        ]
+      }, 
+      {
+        "age": "24M", 
+        "vaccines": [
+          "VITAA3"
+        ]
+      }, 
+      {
+        "age": "30M", 
+        "vaccines": [
+          "VITAA4"
+        ]
+      }, 
+      {
+        "age": "36M", 
+        "vaccines": [
+          "VITAA5"
+        ]
+      }, 
+      {
+        "age": "42M", 
+        "vaccines": [
+          "VITAA6"
+        ]
+      }, 
+      {
+        "age": "48M", 
+        "vaccines": [
+          "VITAA7"
+        ]
+      }, 
+      {
+        "age": "54M", 
+        "vaccines": [
+          "VITAA8"
+        ]
+      }, 
+      {
+        "age": "60M", 
+        "vaccines": [
+          "VITAA9"
+        ]
+      }, 
+      {
+        "age": "60to72M", 
+        "vaccines": [
+          "DPT BOOSTER2"
+        ]
+      }, 
+      {
+        "age": "120M", 
+        "vaccines": [
+          "TT BOOSTER1"
+        ]
+      }, 
+      {
+        "age": "192M", 
+        "vaccines": [
+          "TT BOOSTER2"
+        ]
+      }
+    ]
+  }
+}

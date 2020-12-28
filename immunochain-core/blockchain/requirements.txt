@@ -1,0 +1,5 @@
+sawtooth_signing==1.0.5
+sawtooth_sdk==1.0.5
+secp256k1==0.13.2
+pika==1.0.0 
+cassandra-driver==3.17.0 

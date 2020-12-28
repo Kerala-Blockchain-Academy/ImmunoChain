@@ -1,0 +1,4 @@
+#!/bin/bash
+sudo docker stop api_spec
+sudo docker rm api_spec
+sudo docker run -it --name api_spec -p 4400:4400 -v $(pwd):/mnt sourcey/spectacle spectacle -d /mnt/swagger.json	

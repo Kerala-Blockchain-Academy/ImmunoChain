@@ -1,0 +1,1548 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Immunochain",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "app",
+      "description": "APIs related to the App"
+    },
+    {
+      "name": "user",
+      "description": "APIs related to a User"
+    },
+    {
+      "name": "station",
+      "description": "APIs related to a Station"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/register_rch_user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "aadhar_id": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                },
+                "apl_bpl": {
+                  "type": "string"
+                },
+                "bank_account_number": {
+                  "type": "integer"
+                },
+                "caste": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "ec_no": {
+                  "type": "string"
+                },
+                "family_registration_number": {
+                  "type": "string"
+                },
+                "husband_age": {
+                  "type": "integer"
+                },
+                "husband_dob": {
+                  "type": "object",
+                  "properties": {
+                    "yyyy": {
+                      "type": "string"
+                    },
+                    "mm": {
+                      "type": "string"
+                    },
+                    "dd": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "husband_name": {
+                  "type": "string"
+                },
+                "ifsc_code": {
+                  "type": "string"
+                },
+                "income": {
+                  "type": "integer"
+                },
+                "mother_education": {
+                  "type": "string"
+                },
+                "phone_no": {
+                  "type": "integer"
+                },
+                "phone_no_1": {
+                  "type": "string"
+                },
+                "unique_id": {
+                  "type": "string"
+                },
+                "woman_age": {
+                  "type": "integer"
+                },
+                "woman_dob": {
+                  "type": "object",
+                  "properties": {
+                    "yyyy": {
+                      "type": "string"
+                    },
+                    "mm": {
+                      "type": "string"
+                    },
+                    "dd": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "woman _name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "record_unique_id": {
+                  "type": "string"
+                },
+                "status_code": {
+                  "type": "integer"
+                },
+                "status_msg": {
+                  "type": "string"
+                },
+                "woman_name": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/search_family_data": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Search family details",
+        "description": "",
+        "operationId": "search family",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "husband_name": {
+                  "type": "string"
+                },
+                "phone_no": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "family_details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "husband_name": {
+                        "type": "string"
+                      },
+                      "phone_number": {
+                        "type": "string"
+                      },
+                      "woman_dob": {
+                        "type": "object",
+                        "properties": {
+                          "yyyy": {
+                            "type": "string"
+                          },
+                          "mm": {
+                            "type": "string"
+                          },
+                          "dd": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "pregnant_woman_name": {
+                        "type": "string"
+                      },
+                      "record_unique_id": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "status_code": {
+                  "type": "integer"
+                },
+                "status_msg": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/station_vaccine_analytics": {
+      "post": {
+        "tags": [
+          "station"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "station_id": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "object",
+                  "properties": {
+                    "yyyy": {
+                      "type": "integer"
+                    },
+                    "mm": {
+                      "type": "integer"
+                    },
+                    "dd": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "station_id": {
+                        "type": "string"
+                      },
+                      "vaccines": {
+                        "type": "object",
+                        "properties": {
+                          "BCG": {
+                            "type": "object",
+                            "properties": {
+                              "batches": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "count": {
+                                      "type": "integer"
+                                    },
+                                    "date_checked_in": {
+                                      "type": "object",
+                                      "properties": {
+                                        "yyyy": {
+                                          "type": "integer"
+                                        },
+                                        "mm": {
+                                          "type": "integer"
+                                        },
+                                        "dd": {
+                                          "type": "integer"
+                                        }
+                                      }
+                                    },
+                                    "expiry_date": {
+                                      "type": "object",
+                                      "properties": {
+                                        "yyyy": {
+                                          "type": "integer"
+                                        },
+                                        "mm": {
+                                          "type": "integer"
+                                        },
+                                        "dd": {
+                                          "type": "integer"
+                                        }
+                                      }
+                                    },
+                                    "manufacturer_info": {
+                                      "type": "string"
+                                    },
+                                    "manufacturing_date": {
+                                      "type": "object",
+                                      "properties": {
+                                        "yyyy": {
+                                          "type": "integer"
+                                        },
+                                        "mm": {
+                                          "type": "integer"
+                                        },
+                                        "dd": {
+                                          "type": "integer"
+                                        }
+                                      }
+                                    },
+                                    "package_id": {
+                                      "type": "string"
+                                    },
+                                    "previous_station": {
+                                      "type": "object",
+                                      "properties": {
+                                        "station_address": {
+                                          "type": "string"
+                                        },
+                                        "station_code": {
+                                          "type": "string"
+                                        },
+                                        "station_id": {
+                                          "type": "string"
+                                        },
+                                        "station_name": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    },
+                                    "status": {
+                                      "type": "string"
+                                    },
+                                    "vaccine_sub_id": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "received_count": {
+                                "type": "integer"
+                              },
+                              "transit_count": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "status_code": {
+                  "type": "integer"
+                },
+                "status_msg": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/detailed_immunization_register": {
+      "post": {
+        "tags": [
+          "station"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "csv": {
+                  "type": "string"
+                },
+                "date_from": {
+                  "type": "object",
+                  "properties": {
+                    "yyyy": {
+                      "type": "integer"
+                    },
+                    "mm": {
+                      "type": "integer"
+                    },
+                    "dd": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "date_to": {
+                  "type": "object",
+                  "properties": {
+                    "yyyy": {
+                      "type": "integer"
+                    },
+                    "mm": {
+                      "type": "integer"
+                    },
+                    "dd": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "station": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "child_name": {
+                        "type": "string"
+                      },
+                      "date_of_birth": {
+                        "type": "object",
+                        "properties": {
+                          "yyyy": {
+                            "type": "integer"
+                          },
+                          "mm": {
+                            "type": "integer"
+                          },
+                          "dd": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "father_name": {
+                        "type": "string"
+                      },
+                      "mother_name": {
+                        "type": "string"
+                      },
+                      "sex": {
+                        "type": "string"
+                      },
+                      "vaccines_given": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/station_vaccination_analytics": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "csv": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "batch_id": {
+                        "type": "string"
+                      },
+                      "date_of_administration": {
+                        "type": "object",
+                        "properties": {
+                          "yyyy": {
+                            "type": "integer"
+                          },
+                          "mm": {
+                            "type": "integer"
+                          },
+                          "dd": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "no_of_beneficiaries_administered": {
+                        "type": "integer"
+                      },
+                      "no_of_doses_administered": {
+                        "type": "integer"
+                      },
+                      "vaccine_name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/all_time_vaccine_count": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        }
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "access_token_time": {
+                  "type": "string"
+                },
+                "refresh_token_time": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/qr_code_generator": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                },
+                "key": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/otp_login": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "pregnancy_id": {
+                  "type": "integer"
+                },
+                "phone": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refresh": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Refresh_Token_API",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "access_token_time": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/immunization": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "BeneficiaryIdType": {
+                  "type": "string"
+                },
+                "BeneficiaryId": {
+                  "type": "integer"
+                },
+                "station_other": {
+                  "type": "string"
+                },
+                "nextDate": {
+                  "type": "string"
+                },
+                "GeoLocation": {
+                  "type": "object",
+                  "properties": {
+                    "latitude": {
+                      "type": "integer"
+                    },
+                    "longitude": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "Age": {
+                  "type": "integer"
+                },
+                "edited": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/otp_login_validation": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "pregnancy_id": {
+                  "type": "integer"
+                },
+                "otp": {
+                  "type": "integer"
+                },
+                "access_token_time": {
+                  "type": "string"
+                },
+                "refresh_token_time": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/discard_vaccine": {
+      "post": {
+        "tags": [
+          "station"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "batch_id": {
+                  "type": "integer"
+                },
+                "discard_vaccine": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "reason": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "access_token_time": {
+                  "type": "string"
+                },
+                "refresh_token_time": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/male_female_count": {
+      "post": {
+        "tags": [
+          "station"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "station_id": {
+                  "type": "integer"
+                },
+                "date_from": {
+                  "type": "string"
+                },
+                "date_to": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rch_data/{pregnancy_id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pregnancy_id",
+            "in": "path",
+            "description": "ID of pet that needs to be fetched",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vaccine": {
+      "get": {
+        "tags": [
+          "station"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "station_id",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "request_type",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string"
+                },
+                "package_id": {
+                  "type": "string"
+                },
+                "package_type_id": {
+                  "type": "string"
+                },
+                "manufacturing_date": {
+                  "type": "string"
+                },
+                "expiry_date": {
+                  "type": "string"
+                },
+                "manufacturer_info": {
+                  "type": "string"
+                },
+                "from_station": {
+                  "type": "string"
+                },
+                "to_station": {
+                  "type": "string"
+                },
+                "dose_count": {
+                  "type": "string"
+                },
+                "previous_uuid": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pregnancy_children_data": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "record_pregnancy_id",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/immunizations": {
+      "get": {
+        "tags": [
+          "station"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vaccine_batch_id",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/child_vaccine_api": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status_code": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lookup_data": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Posted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "language": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "roles": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "stations": {
+                  "type": "object",
+                  "properties": {
+                    "stations_list": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "station_address": {
+                            "type": "string"
+                          },
+                          "station_code": {
+                            "type": "string"
+                          },
+                          "station_id": {
+                            "type": "string"
+                          },
+                          "station_name": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "status_code": {
+                  "type": "integer"
+                },
+                "status_msg": {
+                  "type": "string"
+                },
+                "vaccine_names": {
+                  "type": "object",
+                  "properties": {
+                    "BCG": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "DPT BOOSTER": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "HePB": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "IPV": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "APANESE ENCEPHALITIS": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "MMR": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "MR1": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "PENTA": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "POLIO": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ROTA": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "TT BOOSTER": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "VITAA": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "vaccine_names_id": {
+                  "type": "object",
+                  "properties": {
+                    "BCG": {
+                      "type": "integer"
+                    },
+                    "DPT BOOSTER": {
+                      "type": "integer"
+                    },
+                    "HePB": {
+                      "type": "integer"
+                    },
+                    "IPV": {
+                      "type": "integer"
+                    },
+                    "JAPANESE ENCEPHALITIS": {
+                      "type": "integer"
+                    },
+                    "MMR": {
+                      "type": "integer"
+                    },
+                    "MR1": {
+                      "type": "integer"
+                    },
+                    "PENTA": {
+                      "type": "integer"
+                    },
+                    "POLIO": {
+                      "type": "integer"
+                    },
+                    "ROTA": {
+                      "type": "integer"
+                    },
+                    "TT BOOSTER": {
+                      "type": "integer"
+                    },
+                    "VITAA": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "vaccines": {
+                  "type": "object",
+                  "properties": {
+                    "vaccine": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "age": {
+                            "type": "string"
+                          },
+                          "vaccines": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

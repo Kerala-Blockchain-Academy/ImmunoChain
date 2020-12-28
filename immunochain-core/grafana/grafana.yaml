@@ -1,0 +1,16 @@
+# Docker compose file for running grafana and influxdb
+
+
+version: "2.1"
+
+services:
+    
+  grafana:
+    container_name: grafana
+    build:
+      context: .
+      dockerfile: grafana/sawtooth-stats-grafana
+    ports:
+      - "3000:3000"
+    stop_signal: SIGKILL  
+  

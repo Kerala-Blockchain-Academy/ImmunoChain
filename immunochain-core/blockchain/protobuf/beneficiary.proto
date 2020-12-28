@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message beneficiary{
+    string action =1;
+    string beneficiary_id_type = 2;
+    string beneficiary_id = 3;
+}
+
+message benData{
+    string beneficiary_id_type = 1;
+    string beneficiary_id = 2;
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>LWContentType</key>
+	<string>LWContentTypeFrame</string>
+	<key>LWTapeLengthAuto</key>
+	<true/>
+	<key>LWMargins</key>
+	<string>LWMarginsNumberMM</string>
+	<key>LWMarginsValue</key>
+    <integer>1</integer>
+	<key>LWLayoutDirection</key>
+	<string>LWLayoutDirectionHorizontal</string>
+	<key>LWLengthMM</key>
+	<integer>24</integer>
+	<key>LWFrameSizeMode</key>
+	<string>LWFrameSizeModePercent</string>
+	<key>LWFrames</key>
+	<array>
+		<dict>
+			<key>LWContentType</key>
+			<string>LWContentTypeQRCode</string>
+			<key>LWContentWidth</key>
+			<integer>100</integer>
+			<key>LWContentID</key>
+			<string>QRCode</string>
+		</dict>
+	</array>
+</dict>
+</plist>

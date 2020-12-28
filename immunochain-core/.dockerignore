@@ -1,0 +1,5 @@
+.git
+.vagrant
+vagrant
+tmp
+data_backup

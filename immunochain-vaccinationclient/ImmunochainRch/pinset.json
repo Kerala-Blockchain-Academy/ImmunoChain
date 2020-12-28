@@ -1,0 +1,9 @@
+{
+  "domains": {
+    "*.immunochain.dev": {
+      "pins": [
+        "sha256-pL3LE718cbbl8W7/xgqRGo6wDv/OIa6u74bz3BQewmY="
+      ]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+
+  immuno-dashboard:
+    container_name: immuno-dashboard
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./src:/app/src
+    ports:
+      - '5004:3000'

@@ -1,0 +1,133 @@
+version: "2.0"
+
+
+# volumes:
+#   mongo_data:
+#   cassandra_pers_data:
+#   postgres_data:
+
+services:
+
+  cassandra:
+    image: cassandra:3.11.4
+    hostname: cassandra
+    restart: always
+    expose:
+        - 7000
+        - 7001
+        - 7199
+        - 9042
+        - 9160
+        - 9404
+    ports:
+      - "9042:9042"
+    volumes:
+        - ./data_backup/cassandra_pers_data:/var/lib/cassandra
+
+  postgres:
+    hostname: postgres
+    image: postgres:11.10
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres_db
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - ./data_backup/postgres_data:/var/lib/postgresql/data
+
+  rabbitmq:
+     image: "rabbitmq:3-management"
+     hostname: "rabbitmq"
+     restart: always
+
+      # environment:
+      #   RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      #   RABBITMQ_DEFAULT_USER: "guest"
+      #   RABBITMQ_DEFAULT_PASS: "guest"
+      #   RABBITMQ_DEFAULT_VHOST: "/"
+
+     expose:
+       - 15672
+       - 5672
+     labels:
+       NAME: "rabbitmq"
+     volumes:
+       - ./rabbit_queue/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      #  - "./enabled_plugins:/etc/rabbitmq/enabled_plugins"
+      #s  - "./rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro"
+      #   - "./autocluster-0.4.1.ez:/usr/lib/rabbitmq/lib/rabbitmq_server-3.5.5/plugins/autocluster-0.4.1.ez"
+
+
+
+
+  mongo:
+    image: mongo:2.6.10
+    restart: always
+    expose:
+        - 27017
+    volumes:
+    - './data_backup/mongo_data:/data/db'
+
+
+  immuno_api:
+    container_name: api
+    restart: always
+    depends_on:
+#      - rabbitmq
+      - cassandra
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:1337"
+    links:
+      - 'cassandra'
+      - 'mongo'
+#      - 'rabbitmq'
+      - 'postgres'
+    command: ["./wait-for-it.sh", "rabbitmq:5672", "--","./wait-for-it.sh", "cassandra:9042", "--", "./start_api.sh", "${CHAINS_HOST_IP}", "-t 30"]
+    volumes:
+        - '.:/server/'
+
+
+
+
+
+#------------------------------------------------------------------- EVENT LISTENERS ---------------------------------------------------------------------------------
+
+
+  #ben_event_client:
+  #  container_name: ben_event_client
+  #  restart: always
+  #  depends_on:
+  #    - immuno_api
+  #  build:
+  #    context: .
+  #    dockerfile: ./blockchain/event_listeners/DockerEvent
+  #  working_dir: /app
+  #  command: ["./wait-for-it.sh", "rabbitmq:5672", "--","./wait-for-it.sh", "cassandra:9042", "--", "python", "./blockchain/event_listeners/ben_events_client.py"]
+  #  volumes:
+  #      - './:/app'
+  #  links:
+  #    - 'cassandra'
+  #    - 'rabbitmq'
+
+  # vac_event_client:
+  #   container_name: vac_event_client
+  #   restart: always
+  #   depends_on:
+  #     - immuno_api
+  #   build:
+  #     context: .
+  #     dockerfile: ./blockchain/event_listeners/DockerEvent
+  #   working_dir: /app
+  #   command: ["./wait-for-it.sh", "cassandra:9042", "--", "python", "./blockchain/event_listeners/vac_events_client.py"]
+  #   volumes:
+  #       - './:/app'
+  #   links:
+  #     - 'cassandra'
+  #     - 'rabbitmq'

@@ -1,0 +1,402 @@
+version: "2.0"
+
+# volumes:
+#   ben_keys:
+#   cargo-registry:
+#   cargo-git:
+#   cargo-target:
+#   ben_db_0:
+#   ben_db_1:
+#   ben_db_2:
+#   ben_db_3:
+#   ben_validator_key:
+#   ben_influxdb-volume:
+ 
+
+services:
+
+  ben-telegraf:
+    image: telegraf:1.11.5
+    restart: always
+    depends_on:
+      - ben-influxdb
+    environment:
+      HOST_PROC: /rootfs/proc
+      HOST_SYS: /rootfs/sys
+      HOST_ETC: /rootfs/etc
+    hostname: ben-telegraf
+    links:
+      - 'ben-influxdb'
+    volumes:
+      - ./grafana/telegraf/ben_telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys:/rootfs/sys:ro
+      - /proc:/rootfs/proc:ro
+      - /etc:/rootfs/etc:ro
+
+  ben-influxdb:
+    container_name: ben-influxdb
+    restart: always
+    hostname: ben-influxdb
+    build:
+      context: .
+      dockerfile: grafana/influxdb/sawtooth-stats-influxdb
+    ports:
+      - "8086:8086"
+    stop_signal: SIGKILL
+    volumes:
+      - ./data_backup/ben_chain/ben_influxdb-volume:/var/lib/influxdb
+
+  ben-grafana:
+    container_name: ben-grafana
+    restart: always
+    depends_on:
+      - ben-influxdb
+    build:
+      context: .
+      dockerfile: grafana/grafana/sawtooth-stats-grafana
+    ports:
+      - "3001:3000"
+    stop_signal: SIGKILL
+
+
+#  #------------------------------------------------------------------vaccine chain---------------------------------------------------------------------------------
+#  #----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  ben-tp-0:
+    container_name: ben-tp-0
+    restart: always
+    build:
+      context: .
+      dockerfile: ./blockchain/ben_chain/Dockerfile
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    command: python3 ./blockchain/ben_chain/ben_tp.py tcp://ben-validator-0:4004
+    volumes:
+        - '.:/project/tp'
+
+  ben-tp-1:
+    container_name: ben-tp-1
+    restart: always
+    build:
+      context: .
+      dockerfile: ./blockchain/ben_chain/Dockerfile
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    command: python3 ./blockchain/ben_chain/ben_tp.py tcp://ben-validator-1:4004
+    volumes:
+        - '.:/project/tp'
+
+  ben-tp-2:
+    container_name: ben-tp-2
+    restart: always
+    build:
+      context: .
+      dockerfile: ./blockchain/ben_chain/Dockerfile
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    command: python3 ./blockchain/ben_chain/ben_tp.py tcp://ben-validator-2:4004
+    volumes:
+        - '.:/project/tp'
+
+  ben-tp-3:
+    container_name: ben-tp-3
+    restart: always
+    build:
+      context: .
+      dockerfile: ./blockchain/ben_chain/Dockerfile
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    command: python3 ./blockchain/ben_chain/ben_tp.py tcp://ben-validator-3:4004
+    volumes:
+        - '.:/project/tp'    
+
+  ben-validator-0:
+    container_name: ben-validator-0
+    restart: always
+    image: hyperledger/sawtooth-validator:1.1
+    volumes:
+      - ./data_backup/ben_chain/ben_keys:/shared_keys
+      - ./data_backup/ben_chain/ben_db_0:/var/lib/sawtooth
+      - ./data_backup/ben_chain/ben_validator_key:/etc/sawtooth/keys
+    expose:
+      - 4004              #(Ports for internal connections)
+    #   - 8800
+    working_dir: /root
+    command: "bash -c \"\
+      if [ ! -f /var/lib/sawtooth/block-chain-id ]; then
+        echo $$(cat /etc/sawtooth/keys/validator.pub) && \
+        sawadm keygen ben-validator-1 && \
+        sawadm keygen ben-validator-2 && \
+        sawadm keygen ben-validator-3 && \
+        sawadm keygen && \
+        sawset genesis \
+          -k /etc/sawtooth/keys/validator.priv \
+          -o config-genesis.batch && \
+        sawset proposal create \
+          -k /etc/sawtooth/keys/validator.priv \
+          sawtooth.consensus.algorithm.name=pbft \
+          sawtooth.consensus.algorithm.version=1.0 \
+          sawtooth.consensus.pbft.members=\\['\\\"'$$(cat /etc/sawtooth/keys/validator.pub)'\\\"','\\\"'$$(cat /etc/sawtooth/keys/ben-validator-1.pub)'\\\"','\\\"'$$(cat /etc/sawtooth/keys/ben-validator-2.pub)'\\\"','\\\"'$$(cat /etc/sawtooth/keys/ben-validator-3.pub)'\\\"'\\] \
+          sawtooth.consensus.pbft.block_duration=100 \
+          sawtooth.consensus.pbft.view_change_timeout=4000 \
+          sawtooth.consensus.pbft.message_timeout=10 \
+          sawtooth.consensus.pbft.max_log_size=1000 \
+          -o config.batch && \
+        sawadm genesis \
+          config-genesis.batch config.batch && \
+        mv /etc/sawtooth/keys/ben-validator-* /shared_keys && \
+        echo $$(cat /etc/sawtooth/keys/validator.pub); \
+      fi; 
+        sawtooth-validator -vvv \
+            --endpoint tcp://ben-validator-0:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050 \
+            --peering static \
+            --scheduler parallel \
+            --maximum-peer-connectivity 3 \
+            --opentsdb-url http://ben-influxdb:8086 \
+            --opentsdb-db metrics \
+            
+    \""
+    stop_signal: SIGKILL
+
+  ben-validator-1:
+    container_name: ben-validator-1
+    restart: always
+    image: hyperledger/sawtooth-validator:1.1
+    volumes:
+      - ./data_backup/ben_chain/ben_keys:/shared_keys
+      - ./data_backup/ben_chain/ben_db_1:/var/lib/sawtooth
+    expose:
+      - 4004
+    #   - 8800
+    command: "bash -c \"\
+        while true; do if [ -e /shared_keys/ben-validator-1.pub ]; then cp /shared_keys/ben-validator-1.priv /etc/sawtooth/keys/validator.priv && cp /shared_keys/ben-validator-1.pub /etc/sawtooth/keys/validator.pub; break; fi; sleep 0.5; done; \
+        echo $$(cat /etc/sawtooth/keys/validator.pub); \
+        sawtooth-validator \
+            --endpoint tcp://ben-validator-1:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050 \
+            --peering static \
+            --peers tcp://ben-validator-0:8800
+            --scheduler parallel \
+            --maximum-peer-connectivity 3 \
+            --opentsdb-url http://ben-influxdb:8086 \
+            --opentsdb-db metrics \
+           
+    \""
+    stop_signal: SIGKILL
+
+  ben-validator-2:
+    container_name: ben-validator-2
+    restart: always
+    image: hyperledger/sawtooth-validator:1.1
+    volumes:
+      - ./data_backup/ben_chain/ben_keys:/shared_keys
+      - ./data_backup/ben_chain/ben_db_2:/var/lib/sawtooth
+    expose:
+      - 4004
+    #   - 8800
+    command: "bash -c \"\
+        while true; do if [ -e /shared_keys/ben-validator-2.pub ]; then cp /shared_keys/ben-validator-2.priv /etc/sawtooth/keys/validator.priv && cp /shared_keys/ben-validator-2.pub /etc/sawtooth/keys/validator.pub; break; fi; sleep 0.5; done; \
+        echo $$(cat /etc/sawtooth/keys/validator.pub); \
+        sawtooth-validator \
+            --endpoint tcp://ben-validator-2:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050 \
+            --peering static \
+            --peers tcp://ben-validator-0:8800,tcp://ben-validator-1:8800
+            --scheduler parallel \
+            --maximum-peer-connectivity 3 \
+            --opentsdb-url http://ben-influxdb:8086 \
+            --opentsdb-db metrics \
+            
+    \""
+    stop_signal: SIGKILL
+
+  ben-validator-3:
+    container_name: ben-validator-3
+    restart: always
+    image: hyperledger/sawtooth-validator:1.1
+    volumes:
+      - ./data_backup/ben_chain/ben_keys:/shared_keys
+      - ./data_backup/ben_chain/ben_db_3:/var/lib/sawtooth
+    expose:
+      - 4004
+    #   - 8800
+    command: "bash -c \"\
+        while true; do if [ -e /shared_keys/ben-validator-3.pub ]; then cp /shared_keys/ben-validator-3.priv /etc/sawtooth/keys/validator.priv && cp /shared_keys/ben-validator-3.pub /etc/sawtooth/keys/validator.pub; break; fi; sleep 0.5; done; \
+        echo $$(cat /etc/sawtooth/keys/validator.pub); \
+        sawtooth-validator \
+            --endpoint tcp://ben-validator-3:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050 \
+            --peering static \
+            --peers tcp://ben-validator-0:8800,tcp://ben-validator-1:8800,tcp://ben-validator-2:8800
+            --scheduler parallel \
+            --maximum-peer-connectivity 3 \
+            --opentsdb-url http://ben-influxdb:8086 \
+            --opentsdb-db metrics \
+            
+    \""
+    stop_signal: SIGKILL
+
+  ben-pbft-0:
+    container_name: ben-pbft-0
+    restart: always
+    image: hyperledger/sawtooth-pbft-engine:1.0
+    depends_on:
+    - ben-validator-0
+    command: |
+      pbft-engine -vv --connect tcp://ben-validator-0:5050
+    stop_signal: SIGKILL
+
+  ben-pbft-1:
+    container_name: ben-pbft-1
+    restart: always
+    image: hyperledger/sawtooth-pbft-engine:1.0
+    depends_on:
+    - ben-validator-1
+    command: |
+      pbft-engine  --connect tcp://ben-validator-1:5050
+    stop_signal: SIGKILL
+
+  ben-pbft-2:
+    container_name: ben-pbft-2
+    restart: always
+    image: hyperledger/sawtooth-pbft-engine:1.0
+    depends_on:
+    - ben-validator-2
+    command: |
+      pbft-engine  --connect tcp://ben-validator-2:5050
+    stop_signal: SIGKILL
+
+  ben-pbft-3:
+    container_name: ben-pbft-3
+    restart: always
+    image: hyperledger/sawtooth-pbft-engine:1.0
+    depends_on:
+    - ben-validator-3
+    command: |
+      pbft-engine  --connect tcp://ben-validator-3:5050
+    stop_signal: SIGKILL
+
+  ben-rest-api-0:
+    container_name: ben-rest-api-0
+    restart: always
+    image: hyperledger/sawtooth-rest-api:1.1
+    expose:
+      - 8008
+    ports:
+      - '8008:8008'
+    depends_on:
+      - ben-validator-0
+    entrypoint: |
+      sawtooth-rest-api -v
+        --connect tcp://ben-validator-0:4004
+        --bind ben-rest-api-0:8008
+        
+    stop_signal: SIGKILL
+
+  ben-rest-api-1:
+    container_name: ben-rest-api-1
+    restart: always
+    image: hyperledger/sawtooth-rest-api:1.1
+    expose:
+      - 8008
+    depends_on:
+      - ben-validator-1
+    entrypoint: |
+      sawtooth-rest-api -v
+        --connect tcp://ben-validator-1:4004
+        --bind ben-rest-api-1:8008
+        
+    stop_signal: SIGKILL
+  
+  ben-rest-api-2:
+    container_name: ben-rest-api-2
+    restart: always
+    image: hyperledger/sawtooth-rest-api:1.1
+    expose:
+      - 8008
+    depends_on:
+      - ben-validator-2
+    entrypoint: |
+      sawtooth-rest-api -v
+        --connect tcp://ben-validator-2:4004
+        --bind ben-rest-api-2:8008
+       
+    stop_signal: SIGKILL
+
+  ben-rest-api-3:
+    container_name: ben-rest-api-3
+    restart: always
+    image: hyperledger/sawtooth-rest-api:1.1
+    expose:
+      - 8008
+    depends_on:
+      - ben-validator-3
+    entrypoint: |
+      sawtooth-rest-api -v
+        --connect tcp://ben-validator-3:4004
+        --bind ben-rest-api-3:8008
+        
+    stop_signal: SIGKILL
+
+  ben-settings-tp-0:
+    image: hyperledger/sawtooth-settings-tp:1.1
+    restart: always
+    depends_on:
+      - ben-validator-0
+    command: settings-tp -vv --connect tcp://ben-validator-0:4004
+    stop_signal: SIGKILL
+
+  ben-settings-tp-1:
+    image: hyperledger/sawtooth-settings-tp:1.1
+    restart: always
+    depends_on:
+      - ben-validator-1
+    command: settings-tp -vv --connect tcp://ben-validator-1:4004
+    stop_signal: SIGKILL
+
+  ben-settings-tp-2:
+    image: hyperledger/sawtooth-settings-tp:1.1
+    restart: always
+    depends_on:
+      - ben-validator-2
+    command: settings-tp -vv --connect tcp://ben-validator-2:4004
+    stop_signal: SIGKILL
+
+  ben-settings-tp-3:
+    image: hyperledger/sawtooth-settings-tp:1.1
+    restart: always
+    depends_on:
+      - ben-validator-3
+    command: settings-tp -vv --connect tcp://ben-validator-3:4004
+    stop_signal: SIGKILL
+
+  ben-nginx:
+    hostname: nginxserver
+    image: nginx:1.16.0
+    restart: always
+    ports:
+      - "5001:5001"
+      - "4004:4004"
+    volumes:
+      - './nginx/nginx.conf:/etc/nginx/nginx.conf'
+      - './nginx/.httpassword:/etc/nginx/.httpassword'
+    links:
+      - 'ben-rest-api-0'

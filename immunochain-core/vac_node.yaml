@@ -1,0 +1,92 @@
+version: "2.0"
+
+volumes:
+  vac_keys:
+  vac_db_5:
+  vac_validator_key:
+
+services:
+    
+  vac-tp-5:
+    container_name: vac-tp-5
+    restart: always
+    build:
+      context: .
+      dockerfile: ./blockchain/vac_chain/Dockerfile
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    command: python3 ./blockchain/vac_chain/vac_tp.py tcp://vac-validator-5:4004
+    volumes:
+        - '.:/project/tp'
+    
+  vac-validator-5:
+    container_name: vac-validator-5
+    restart: always
+    image: hyperledger/sawtooth-validator:1.1
+    volumes:
+      - vac_db_5:/var/lib/sawtooth
+    expose:
+      - 4004
+    command: "bash -c \"\
+        sawadm keygen && \
+        sawtooth-validator \
+            --endpoint tcp://vac-validator-5:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050 \
+            --peering static \
+            --peers tcp://${GENESIS_NODE_IP}:8800 \
+            --scheduler parallel \
+            --maximum-peer-connectivity 3      
+    \""
+    stop_signal: SIGKILL
+
+  vac-pbft-5:
+    container_name: vac-pbft-5
+    restart: always
+    image: hyperledger/sawtooth-pbft-engine:1.0
+    depends_on:
+    - vac-validator-5
+    command: |
+      pbft-engine -vv --connect tcp://vac-validator-5:5050
+    stop_signal: SIGKILL
+
+  vac-settings-tp-5:
+    image: hyperledger/sawtooth-settings-tp:1.1
+    restart: always
+    depends_on:
+      - vac-validator-5
+    command: settings-tp -vv --connect tcp://vac-validator-5:4004
+    stop_signal: SIGKILL
+
+  vac-rest-api-5:
+    container_name: vac-rest-api-5
+    restart: always
+    image: hyperledger/sawtooth-rest-api:1.1
+    expose:
+      - 8009
+    ports:
+      - '8009:8008'
+    depends_on:
+      - vac-validator-5
+    entrypoint: |
+      sawtooth-rest-api -v
+        --connect tcp://vac-validator-5:4004
+        --bind vac-rest-api-5:8008
+        
+    stop_signal: SIGKILL
+
+  # vac-nginx:
+  #   hostname: nginxserver
+  #   image: nginx:1.16.0
+  #   restart: always
+  #   ports:
+  #     - "5001:5001"
+  #     - "4005:4005"
+  #   volumes:
+  #     - './nginx/nginx.conf:/etc/nginx/nginx.conf'
+  #     - './nginx/.httpassword:/etc/nginx/.httpassword'
+  #   links:
+  #     - 'vac-rest-api-5'

@@ -1,0 +1,93 @@
+version: "2.0"
+
+volumes:
+  ben_keys:
+  ben_db_5:
+  ben_validator_key:
+ 
+
+services:
+
+  ben-tp-5:
+    container_name: ben-tp-5
+    restart: always
+    build:
+      context: .
+      dockerfile: ./blockchain/ben_chain/Dockerfile
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    command: python3 ./blockchain/ben_chain/ben_tp.py tcp://ben-validator-5:4004
+    volumes:
+        - '.:/project/tp'
+
+  ben-validator-5:
+    container_name: ben-validator-5
+    restart: always
+    image: hyperledger/sawtooth-validator:1.1
+    volumes:
+      - ben_db_5:/var/lib/sawtooth
+    expose:
+      - 4004
+    command: "bash -c \"\
+        sawadm keygen && \
+        sawtooth-validator \
+            --endpoint tcp://ben-validator-5:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050 \
+            --peering static \
+            --peers tcp://${GENESIS_NODE_IP}:8800 \
+            --scheduler parallel \
+            --maximum-peer-connectivity 3        
+    \""
+    stop_signal: SIGKILL
+
+  ben-pbft-5:
+    container_name: ben-pbft-5
+    restart: always
+    image: hyperledger/sawtooth-pbft-engine:1.0
+    depends_on:
+    - ben-validator-5
+    command: |
+      pbft-engine -vv --connect tcp://ben-validator-5:5050
+    stop_signal: SIGKILL
+
+  ben-settings-tp-5:
+    image: hyperledger/sawtooth-settings-tp:1.1
+    restart: always
+    depends_on:
+      - ben-validator-5
+    command: settings-tp -vv --connect tcp://ben-validator-5:4004
+    stop_signal: SIGKILL
+
+  ben-rest-api-5:
+    container_name: ben-rest-api-5
+    restart: always
+    image: hyperledger/sawtooth-rest-api:1.1
+    expose:
+      - 8009
+    ports:
+      - '8009:8008'
+    depends_on:
+      - ben-validator-5
+    entrypoint: |
+      sawtooth-rest-api -v
+        --connect tcp://ben-validator-5:4004
+        --bind ben-rest-api-5:8008
+        
+    stop_signal: SIGKILL
+
+  # ben-nginx:
+  #   hostname: nginxserver
+  #   image: nginx:1.16.0
+  #   restart: always
+  #   ports:
+  #     - "5001:5001"
+  #     - "4004:4004"
+  #   volumes:
+  #     - './nginx/nginx.conf:/etc/nginx/nginx.conf'
+  #     - './nginx/.httpassword:/etc/nginx/.httpassword'
+  #   links:
+  #     - 'ben-rest-api-5'

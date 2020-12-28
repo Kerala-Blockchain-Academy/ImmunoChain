@@ -1,0 +1,80 @@
+
+----------Ports and urls used------------
+
+RabbitMQ
+    IP: <address of machine running rabbitmq>
+    15672:  HTTP API clients, management UI and rabbitmqadmin
+    5672, 5671: used by AMQP 0-9-1 and 1.0 clients without and with TLS
+
+influxdb
+    port: 8086
+    url : http://influxdb:8086
+
+grafana
+    port: 3000
+    url : 
+
+cassandra
+    port: 
+
+
+validator
+    port: 4004
+          8800
+          5050
+    Port 4004 is used by rest-API, Transaction Processors (settings TPs also).
+    Port 8800 i used for the connection between different validators, in other words to make validator network.
+    Port 5050 is used by consensus engines to connect to validators.
+
+
+Trasaction Processors (TP)
+    port 4004 of validator is used.
+    We have two chains(beneficiary and vaccine chains) and 4 sample nodes.
+        Hence we have 4 sets of, 
+               1)Beneficiary settings TP(ben-settings-tp-*)
+               2)Beneficiary TP(ben-tp-*)
+               3)Vaccine settings TP(vac-settings-tp-*)   and 
+               4)Vaccine TP(vac-tp-*)
+        All these containers are connected to port 4004 of their respective validator containers with IPs,
+            ben-tp-0 : tcp://ben-validator-0:4004
+            ben-tp-1 : tcp://ben-validator-1:4004
+            ben-tp-2 : tcp://ben-validator-2:4004
+            ben-tp-3 : tcp://ben-validator-3:4004   
+            vac-settings-tp-3 : tcp://vac-validator-3:4004
+            ben-settings-tp-2 : tcp://ben-validator-2:4004   and it continues for other TPs as well.
+    
+    The settings TP also follows a very similar way of port connection. 
+
+
+Consensus Engine(pbft)
+    port 5050 of validator is used.
+    Consensus engines are plugged into port 5050 of the validators. We have 4 consensus engines each 
+    for beneficiary and vaccine chains.
+    
+        vac-pbft-0 : tcp://vac-validator-0:5050
+        vac-pbft-1 : tcp://vac-validator-1:5050                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+        vac-pbft-2 : tcp://vac-validator-2:5050   
+        .
+        ben-pbft-0 : tcp://ben-validator-0:5050
+        ben-pbft-1 : tcp://ben-validator-1:5050                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+
+
+
+rest-API
+    port: 8008
+
+    port 4004 of validator is used.
+    We have 4 rest-APIs, each for beneficiary and vaccine chains, and are conneceted to their respected 
+    validators using IPs such as
+        vac-rest-api-0 : tcp://vac-validator-0:4004
+        vac-rest-api-1 : tcp://vac-validator-1:4004 
+        .
+        ben-rest-api-3 : tcp://ben-validator-3:4004
+    
+    To view & use rest-API of Beneficiary chain, the url : http://localhost:8008/
+    To view & use rest-API of Vaccine chain, the url     : http://localhost:8009/
+
+
+
+NOTE: The ports for internal connections need not be exposed.
+      But ports for external connections, for example by rest-APIs(port 8008) will not work if they aren't exposed.
