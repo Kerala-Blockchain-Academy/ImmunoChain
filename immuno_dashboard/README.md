@@ -52,8 +52,6 @@ There is provision to edit the details entered during beneficiary registration. 
 The user registration mechanism provides a form that allows new users to register themselves on the system.
 
 
-[Detailed user manual](https://docs.google.com/document/d/1aDM7KDM1frdkSl2IJi_REuyQgrSVVODT_n5Z3vMM4Zs/edit)
-
 
 
 
